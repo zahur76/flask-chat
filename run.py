@@ -30,14 +30,13 @@ def index():
 def user(username):
     """Add and display chat messages"""
     if request.method == "POST":
-        username = session["username"]
         message = request.form["message"]
         add_message(username, message)
-        return redirect(url_for("user", username=session["username"]))
+        return redirect(url_for("user", username=username))
 
     return render_template("chat.html", username=username,
                            chat_messages=messages)
 
 
 app.run(host=os.getenv("IP", "0.0.0.0"),
-        port=int(os.getenv("PORT", "5000")), debug=False)
+        port=int(os.getenv("PORT", "5000")), debug=True)
