@@ -7,16 +7,11 @@ app.secret_key = "randomstring123"
 messages = []
 
 
-
 def add_messages(username, message):
     """Add messages to messages list"""
     now = datetime.now().strftime("%H:%M:%S")
-    messages.append("({}): {}: {}".format(now, username, message))
-
-
-def get_all_messages():
-    """Format messages list"""
-    return "<br>".join(messages)
+    message_dict = {"timestamp": now, "from": username, "message": message}
+    messages.append(message_dict)
 
 
 @app.route("/", methods=["get", "POST"])
@@ -35,7 +30,7 @@ def index():
 @app.route("/<username>")
 def name(username):
     """Display chat message"""
-    return "<h1>Welcome, {0}</h1>{1}".format(username, get_all_messages())
+    return render_template("chat.html", username=username, chat_messages=messages)
 
 
 @app.route("/<username>/<message>")
